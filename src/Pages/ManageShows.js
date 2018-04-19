@@ -4,8 +4,17 @@ import Show from '../Show'
 export default class ManageShows extends Component {
     state = {
         show: {
-            name: ''
-        }
+            name: '',
+            rating: -1,
+            previewImage: ''
+        },
+        shows: [
+            {
+                name: 'Trollhunters',
+                rating: 3,
+                previewImage: 'http://cdn03.cdn.justjaredjr.com/wp-content/uploads/headlines/2016/10/trollhunters-poster.jpg'
+            }
+        ]
     }
 
     handleOnChange = (event) => {
@@ -15,7 +24,7 @@ export default class ManageShows extends Component {
             })
         } else if (event.target.id === "ratingInput") {
             this.setState({
-                newShowRating: event.target.value
+                newShowRating: Number(event.target.value)
             })
         } else if (event.target.id === "previewImageInput") {
             this.setState({
@@ -26,25 +35,55 @@ export default class ManageShows extends Component {
 
     handleOnClick = () => {
         this.setState((prev) => {
+            const existingShows = prev.shows
+            existingShows.push({
+                name: prev.newShowName,
+                rating: prev.newShowRating,
+                previewImage: prev.newShowPreviewImage
+            })
+
             return {
-                show: {
-                    name: prev.newShowName,
-                    rating: prev.newShowRating,
-                    previewImage: prev.newShowPreviewImage
-                }
+                shows: existingShows
             }
         })
     }
 
+    renderShows = () => {
+        //const showComponents = []
+
+        // for (const show of this.state.shows) {
+        //     showComponents.push(
+        //         <Show key={0} name={show.name} rating={show.rating} previewImage={show.previewImage} />
+        //     )
+        // }
+
+        // for (let i = 0; i < this.state.shows.length; i++) {
+        //     const show = this.state.shows[i];
+            
+        //     showComponents.push(
+        //         <Show key={i} name={show.name} rating={show.rating} previewImage={show.previewImage} />
+        //     )
+        // }
+
+        //return showComponents
+
+        return this.state.shows.map((show, i) => {
+            const a = (
+                <Show key={i} name={show.name} rating={show.rating} previewImage={show.previewImage} />
+            )
+            console.log(a)
+            return a
+        })
+    }
+
     render() {
-        console.log("STATE", this.state)
+        // console.log("STATE", this.state)
         return (
             <div>
                 <section className="viewAllShows">
                     <header><h1>All Shows</h1></header>
                     <div>
-                        <Show name={this.state.show.name} rating={this.state.show.rating} previewImage={this.state.show.previewImage} />
-                        {/* <Show name="Show Name" /> */}
+                        {this.renderShows()}
                     </div>
                 </section>
                 <section className="createShow">
