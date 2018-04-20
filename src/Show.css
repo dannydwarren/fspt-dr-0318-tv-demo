@@ -1,0 +1,14 @@
+article {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+article img {
+    height: 50px;
+    order: -1;
+}
+
+article * {
+    margin: 10px;
+}

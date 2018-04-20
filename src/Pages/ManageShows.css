@@ -1,0 +1,12 @@
+.manageShows {
+    display: flex;
+    flex-direction: row;
+}
+
+.viewAllShows {
+    width: 50vw;
+}
+
+.createShow {
+
+}
