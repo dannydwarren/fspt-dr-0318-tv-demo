@@ -68,11 +68,9 @@ export default class ManageShows extends Component {
         //return showComponents
 
         return this.state.shows.map((show, i) => {
-            const a = (
+            return (
                 <Show key={i} name={show.name} rating={show.rating} previewImage={show.previewImage} />
             )
-            console.log(a)
-            return a
         })
     }
 
