@@ -14,14 +14,7 @@ export default class ManageShows extends Component {
             name: '',
             rating: -1,
             previewImage: ''
-        },
-        shows: [
-            {
-                name: 'Trollhunters',
-                rating: 3,
-                previewImage: 'http://cdn03.cdn.justjaredjr.com/wp-content/uploads/headlines/2016/10/trollhunters-poster.jpg'
-            }
-        ]
+        }
     }
 
     handleOnChange = (event) => {
@@ -56,12 +49,24 @@ export default class ManageShows extends Component {
         })
     }
 
+    getAvgRating = () => {
+        const sumOfRatings = this.props.allShows.reduce((accumulator, show)=>{
+            console.log("getAvgRating(acc, show) -> return", accumulator, show.rating, show.rating + accumulator)
+            return show.rating + accumulator
+        }, 0)
+
+        return sumOfRatings / this.props.allShows.length
+    }
+
     render() {
         // console.log("STATE", this.state)
         return (
             <div className="manageShows">
                 <section className="viewAllShows">
-                    <header><h1>All Shows</h1></header>
+                    <header>
+                        <h1>All Shows</h1>
+                        <p>Avg Rating: {this.getAvgRating()}</p>
+                    </header>
                     <div>
                         {this.renderShows()}
                     </div>
