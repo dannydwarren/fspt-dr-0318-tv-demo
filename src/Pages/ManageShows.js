@@ -49,24 +49,6 @@ export default class ManageShows extends Component {
     }
 
     renderShows = () => {
-        //const showComponents = []
-
-        // for (const show of this.state.shows) {
-        //     showComponents.push(
-        //         <Show key={0} name={show.name} rating={show.rating} previewImage={show.previewImage} />
-        //     )
-        // }
-
-        // for (let i = 0; i < this.state.shows.length; i++) {
-        //     const show = this.state.shows[i];
-            
-        //     showComponents.push(
-        //         <Show key={i} name={show.name} rating={show.rating} previewImage={show.previewImage} />
-        //     )
-        // }
-
-        //return showComponents
-
         return this.props.allShows.map((show, i) => {
             return (
                 <Show key={i} name={show.name} rating={show.rating} previewImage={show.previewImage} />

@@ -11,6 +11,16 @@ class App extends Component {
         name: 'Trollhunters',
         rating: 3,
         previewImage: 'http://cdn03.cdn.justjaredjr.com/wp-content/uploads/headlines/2016/10/trollhunters-poster.jpg'
+      },
+      {
+        name: 'Trollhunters - Kids',
+        rating: 1,
+        previewImage: 'http://cdn03.cdn.justjaredjr.com/wp-content/uploads/headlines/2016/10/trollhunters-poster.jpg'
+      },
+      {
+        name: 'Trollhunters - ULTRA MATURE',
+        rating: 5,
+        previewImage: 'http://cdn03.cdn.justjaredjr.com/wp-content/uploads/headlines/2016/10/trollhunters-poster.jpg'
       }
     ]
   }
