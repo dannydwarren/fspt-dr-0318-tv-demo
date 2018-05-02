@@ -50,12 +50,30 @@ export default class ManageShows extends Component {
     }
 
     getAvgRating = () => {
-        const sumOfRatings = this.props.allShows.reduce((accumulator, show)=>{
+        const sumOfRatings = this.props.allShows.reduce((accumulator, show) => {
             console.log("getAvgRating(acc, show) -> return", accumulator, show.rating, show.rating + accumulator)
             return show.rating + accumulator
         }, 0)
 
         return sumOfRatings / this.props.allShows.length
+    }
+
+    hasEnoughKidShows = () => {
+        const minRequiredKidShows = 2
+
+        let kidShowCount = 0
+        let remainingShows = this.props.allShows.length
+        while (kidShowCount < minRequiredKidShows && remainingShows) {
+            remainingShows--
+
+            const show = this.props.allShows[remainingShows]
+
+            if (show.rating === 1) {
+                kidShowCount++
+            }
+        }
+
+        return (kidShowCount >= minRequiredKidShows).toString()
     }
 
     render() {
@@ -66,6 +84,7 @@ export default class ManageShows extends Component {
                     <header>
                         <h1>All Shows</h1>
                         <p>Avg Rating: {this.getAvgRating()}</p>
+                        <p>Has Enough Kid Shows: {this.hasEnoughKidShows()}</p>
                     </header>
                     <div>
                         {this.renderShows()}
