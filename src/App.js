@@ -20,35 +20,71 @@ class App extends Component {
     })
   }
 
-  testPromises = () => {
-    console.log('testing some promises')
-    new Promise((resolve, reject) => {
-      const success = true
+  startPromise = (success) => {
+    return new Promise((resolve, reject) => {
+      const successMessage = 'promise was successful'
+      const errorMessage = 'promise failed epically'
       setTimeout(() => {
         if (success)
-          resolve('promise was successful')
+          resolve(successMessage)
         else
-          reject('promise failed epically')
+          reject(errorMessage)
       }, 5000)
     })
-      .then((value) => { console.log(value) })
-      .catch((error) => { console.log(error) })
+  }
+
+  testPromises = () => {
+    console.log('testing some promises')
+    this.startPromise(true).then((value) => { console.log(value) }).catch((error) => { console.log(error) })
     console.log('finshed executing promise')
   }
 
   getShows = () => {
     fetch('http://localhost:3001/shows')
-      .then((response) => {
-        console.log("response:", response)
-        return response.json()
+      .then((showsResponse) => {
+        //console.log("response:", showsResponse)
+        return showsResponse.json()
       })
       .then((shows) => {
-        console.log("jsonData:", shows)
+        //console.log("jsonData:", shows)
         this.setState({ shows })
       })
       .catch((error) => {
-        console.log(error, 'also error')
+        //console.log(error, 'also error')
+        this.setState({ errorMessage: error })
       })
+  }
+
+  postShow = (showToSave) => {
+    console.log(showToSave)
+    const postInit = {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(showToSave)
+    }
+    fetch('http://localhost:3001/shows', postInit)
+      .then((postShowsReponse) => {
+        return postShowsReponse.json()
+      })
+      .then((show) => {
+        console.log("postedShow:", show)
+        this.createShow(show)
+      })
+      .catch((error) => {
+        console.log("failed to parse json from post:", error)
+        this.setState({ errorMessage: error })
+      })
+
+  }
+
+  renderError = () => {
+    console.log("errormessage is:", this.state.errorMessage)
+    return this.state.errorMessage
+      ? (<div>{this.state.errorMessage.toString()}</div>)
+      : (<div></div>)
   }
 
   componentDidMount() {
@@ -60,9 +96,10 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+          {this.renderError()}
           <Switch>
             <Route exact path="/" component={() => <ViewShows allShows={this.state.shows} />} />
-            <Route path="/manageShows" component={() => <ManageShows allShows={this.state.shows} createShow={this.createShow} />} />
+            <Route path="/manageShows" component={() => <ManageShows allShows={this.state.shows} createShow={this.postShow} />} />
           </Switch>
         </div>
       </Router>
