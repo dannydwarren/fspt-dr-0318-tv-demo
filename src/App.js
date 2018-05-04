@@ -39,20 +39,14 @@ class App extends Component {
     console.log('finshed executing promise')
   }
 
-  getShows = () => {
-    fetch('http://localhost:3001/shows')
-      .then((showsResponse) => {
-        //console.log("response:", showsResponse)
-        return showsResponse.json()
-      })
-      .then((shows) => {
-        //console.log("jsonData:", shows)
-        this.setState({ shows })
-      })
-      .catch((error) => {
-        //console.log(error, 'also error')
-        this.setState({ errorMessage: error })
-      })
+  getShows = async () => {
+    try {
+      const showsResponse = await fetch('http://localhost:3001/shows')
+      const shows = await showsResponse.json()
+      this.setState({ shows })
+    } catch (error) {
+      this.setState({ errorMessage: error })
+    }
   }
 
   postShow = (showToSave) => {
@@ -77,7 +71,6 @@ class App extends Component {
         console.log("failed to parse json from post:", error)
         this.setState({ errorMessage: error })
       })
-
   }
 
   renderError = () => {
