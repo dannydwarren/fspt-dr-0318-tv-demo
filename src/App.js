@@ -10,6 +10,8 @@ class App extends Component {
   }
 
   createShow = (show) => {
+    console.log("createdShow:", show)
+    
     this.setState((prev) => {
       const existingShows = prev.shows
       existingShows.push(show)
@@ -33,15 +35,9 @@ class App extends Component {
     })
   }
 
-  testPromises = () => {
-    console.log('testing some promises')
-    this.startPromise(true).then((value) => { console.log(value) }).catch((error) => { console.log(error) })
-    console.log('finshed executing promise')
-  }
-
   getShows = async () => {
     try {
-      const showsResponse = await fetch('http://localhost:3001/shows')
+      const showsResponse = await fetch('https://fspt-dr-0318-tv-server-demo-ombfreqvqv.now.sh/shows')
       const shows = await showsResponse.json()
       this.setState({ shows })
     } catch (error) {
@@ -49,7 +45,7 @@ class App extends Component {
     }
   }
 
-  postShow = (showToSave) => {
+  postShow = async (showToSave) => {
     console.log(showToSave)
     const postInit = {
       method: 'POST',
@@ -59,18 +55,15 @@ class App extends Component {
       },
       body: JSON.stringify(showToSave)
     }
-    fetch('http://localhost:3001/shows', postInit)
-      .then((postShowsReponse) => {
-        return postShowsReponse.json()
-      })
-      .then((show) => {
-        console.log("postedShow:", show)
-        this.createShow(show)
-      })
-      .catch((error) => {
-        console.log("failed to parse json from post:", error)
-        this.setState({ errorMessage: error })
-      })
+
+    try {
+      const postShowsReponse = await fetch('https://fspt-dr-0318-tv-server-demo-ombfreqvqv.now.sh/shows', postInit)
+      const show = await postShowsReponse.json()
+      this.createShow(show)
+    } catch (error) {
+      console.log("failed to parse json from post:", error)
+      this.setState({ errorMessage: error })
+    }
   }
 
   renderError = () => {
@@ -81,7 +74,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    //this.testPromises()
     this.getShows()
   }
 
